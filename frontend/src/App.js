@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import styles from './App.module.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import styles from "./App.module.css";
 
-const API_BASE_URL = 'http://localhost:8000/api';
+const API_BASE_URL = "http://localhost:8000/api";
 
 const TvShowList = ({ onSelectShow }) => {
   const [shows, setShows] = useState([]);
@@ -10,10 +10,10 @@ const TvShowList = ({ onSelectShow }) => {
   useEffect(() => {
     const fetchShows = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/shows`);
+        const response = await axios.get(`${API_BASE_URL}/movies`);
         setShows(response.data);
       } catch (error) {
-        console.error('Error fetching TV shows:', error);
+        console.error("Error fetching TV shows:", error);
       }
     };
 
@@ -24,8 +24,8 @@ const TvShowList = ({ onSelectShow }) => {
     <div className={styles.showList}>
       <h2>TV Shows</h2>
       <ul>
-        {shows.map(show => (
-          <li key={show.id} onClick={() => onSelectShow(show.id)}>
+        {shows.map((show) => (
+          <li key={show.movieId} onClick={() => onSelectShow(show.movieId)}>
             {show.title}
           </li>
         ))}
@@ -42,15 +42,18 @@ const SeasonList = ({ showId }) => {
       if (!showId) return;
 
       try {
-        const response = await axios.get(`${API_BASE_URL}/seasons?show_id=${showId}`);
-        setSeasons(response.data.seasons || []);
+        const response = await axios.get(
+          `${API_BASE_URL}/seasons?movie_id=${showId}`
+        );
+        setSeasons(response.data[0]?.seasons || []);
       } catch (error) {
-        console.error('Error fetching seasons:', error);
+        console.error("Error fetching seasons:", error);
       }
     };
 
     fetchSeasons();
   }, [showId]);
+
 
   if (!showId) return <p>Select a show to see its episodes.</p>;
 
@@ -61,6 +64,7 @@ const SeasonList = ({ showId }) => {
     acc[episode.season].push(episode);
     return acc;
   }, {});
+
 
   return (
     <div className={styles.seasonList}>
@@ -74,13 +78,21 @@ const SeasonList = ({ showId }) => {
             <ul>
               {episodes.map((episode, index) => (
                 <li key={index} className={styles.episode}>
-                  <h4>Episode {episode.episode}: {episode.title}</h4>
+                  <h4>
+                    Episode {episode.episode}: {episode.title}
+                  </h4>
                   <p>{episode.description}</p>
                   <div className={styles.episodeInfo}>
                     {episode.airDate && <p>Air Date: {episode.airDate}</p>}
-                    {episode.imdbRating && <p>IMDB Rating: {episode.imdbRating}</p>}
-                    {episode.directedBy && <p>Directed by: {episode.directedBy}</p>}
-                    {episode.writtenBy && <p>Written by: {episode.writtenBy}</p>}
+                    {episode.imdbRating && (
+                      <p>IMDB Rating: {episode.imdbRating}</p>
+                    )}
+                    {episode.directedBy && (
+                      <p>Directed by: {episode.directedBy}</p>
+                    )}
+                    {episode.writtenBy && (
+                      <p>Written by: {episode.writtenBy}</p>
+                    )}
                   </div>
                 </li>
               ))}
