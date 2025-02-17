@@ -1,12 +1,17 @@
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 import boto3
+import boto3.session
 from boto3.dynamodb.conditions import Attr
 from dotenv import load_dotenv
+import os
 
 
 # Load environment variables from .env file
 load_dotenv()
+AWS_ACCESS_KEY_ID=os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY=os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_REGION=os.getenv('AWS_REGION')
 
 app = FastAPI()
 
@@ -21,7 +26,8 @@ app.add_middleware(
 )
 
 # get the service resource
-dynamodb = boto3.resource('dynamodb')
+session = boto3.session.Session(region_name=AWS_REGION, aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+dynamodb = session.resource('dynamodb')
 
 # get table
 table = dynamodb.Table('Movie-data')
@@ -38,7 +44,7 @@ async def get_movies():
         items = response['Items']
         return items
     except Exception as e:
-        raise HTTPException(status_code=500, details=str(e))
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/seasons")
 
