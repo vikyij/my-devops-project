@@ -4,10 +4,11 @@ on:
   push:
     branches:
       - main
+    paths:
+      - api/**
     
 jobs: 
   build-api:
-    if: contains(github.event.head_commit.modified, 'api/') 
     runs-on: ubuntu-latest
     steps: 
       # This steps checks out a copy of the repository
