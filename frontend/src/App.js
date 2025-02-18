@@ -54,7 +54,6 @@ const SeasonList = ({ showId }) => {
     fetchSeasons();
   }, [showId]);
 
-
   if (!showId) return <p>Select a show to see its episodes.</p>;
 
   const episodesBySeason = seasons.reduce((acc, episode) => {
@@ -64,7 +63,6 @@ const SeasonList = ({ showId }) => {
     acc[episode.season].push(episode);
     return acc;
   }, {});
-
 
   return (
     <div className={styles.seasonList}>
@@ -109,7 +107,7 @@ const App = () => {
 
   return (
     <div className={styles.app}>
-      <h1 className={styles.header}>Victoria's Favorite TV Shows</h1>
+      <h1 className={styles.header}>Victoria's Favorite Movies</h1>
       <div className={styles.container}>
         <TvShowList onSelectShow={setSelectedShowId} />
         <SeasonList showId={selectedShowId} />
