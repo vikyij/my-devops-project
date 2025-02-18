@@ -109,7 +109,7 @@ const App = () => {
 
   return (
     <div className={styles.app}>
-      <h1 className={styles.header}>Rishab's Favorite TV Shows</h1>
+      <h1 className={styles.header}>Victoria's Favorite TV Shows</h1>
       <div className={styles.container}>
         <TvShowList onSelectShow={setSelectedShowId} />
         <SeasonList showId={selectedShowId} />
