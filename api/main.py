@@ -23,7 +23,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# get the service resource, use session so that I can pass the region name and aws credentials needed when running the api container
+# get the service resource, use session so that I can pass the region name and aws credentials needed to run the api container
 session = boto3.session.Session(region_name=AWS_REGION, aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
 dynamodb = session.resource('dynamodb')
 
