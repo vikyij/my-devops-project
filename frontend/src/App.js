@@ -2,15 +2,15 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./App.module.css";
 
-const API_BASE_URL = "http://localhost:8000/api";
-
 const TvShowList = ({ onSelectShow }) => {
   const [shows, setShows] = useState([]);
 
   useEffect(() => {
     const fetchShows = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/movies`);
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_BASE_URL}/movies`
+        );
         setShows(response.data);
       } catch (error) {
         console.error("Error fetching TV shows:", error);
@@ -43,7 +43,7 @@ const SeasonList = ({ showId }) => {
 
       try {
         const response = await axios.get(
-          `${API_BASE_URL}/seasons?movie_id=${showId}`
+          `${process.env.REACT_APP_API_BASE_URL}/seasons?movie_id=${showId}`
         );
         setSeasons(response.data[0]?.seasons || []);
       } catch (error) {
